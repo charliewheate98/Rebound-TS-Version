@@ -14,6 +14,7 @@ export class Player extends Entity {
 
   public current_direction: number; // the current direction the player is going in
   public score: number; // the players current score
+  public speed: number;
 
   // Constructer: initialise and create objects here..
   constructor(pos: BABYLON.Vector2, _scene: BABYLON.Scene) {
@@ -22,6 +23,7 @@ export class Player extends Entity {
     // initialise variables
     this.current_direction = 0; // initialise the current direction 
     this.score = 0; // initialise the players score
+    this.speed = 0.5;
 
     // create a new material
     var unlit_mat = new BABYLON.StandardMaterial("unlitMat", _scene); // initialise a standard material. this will an unlit white material
@@ -46,12 +48,12 @@ export class Player extends Entity {
   }
 
   // update the player every frame
-  public update(dT: any): void {
+  public update(dT: number): void {
     if(this.current_direction == 1) {
-      this.player_character.position.x -= 8.0; //* dT;
+      this.player_character.position.x -= this.speed * dT;
     }
     else if(this.current_direction == -1) {
-      this.player_character.position.x += 8.0; //* dT;
+      this.player_character.position.x += this.speed * dT;
     }
   }
 }

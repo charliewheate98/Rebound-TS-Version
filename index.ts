@@ -16,7 +16,7 @@ class Game {
   public _scene: BABYLON.Scene; // the babylon scene
   private _cam: OrthoCamera; // orthographic camera
 
-  private dT: any;
+  private dT: number;
 
   // Constructer: 
   constructor(canvasElement: string) {
@@ -60,11 +60,6 @@ class Game {
     // camera.orthoLeft = 0; // left of screen
     // camera.orthoRight = 400; // right of screen
 
-    var update = () => {
-        this.dT = this._engine.getDeltaTime();
-        console.log(this.dT);
-    }    
-
     var _player = new Player(new BABYLON.Vector2(100, -200), this._scene); // initialise the player
     var _ball = new Ball(this._scene); // initialise the ball
 
@@ -82,10 +77,9 @@ class Game {
     trail.BindEmitter(_player.player_character); // the object in which the particles emit from
     trail.Simulate(); // start the particle simulation on the first hit
 
-    // tick the following code every frame
-    this._scene.registerBeforeRender(function () {
-        update();
-
+    var update = () => {
+        this.dT = this._engine.getDeltaTime();
+        
         _player.update(this.dT); // update the player
 
         // on keydown perform the code in the function
@@ -115,6 +109,11 @@ class Game {
         }
         else // if no intersection has been detected there shouldnt be any particles playing
             trail.GetParticleSystem().stop();
+    }    
+
+    // tick the following code every frame
+    this._scene.registerBeforeRender(function () {
+        update();
     });
 }
 
